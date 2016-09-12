@@ -4,7 +4,7 @@
   when: monolith_core_enable_feature_aws_code_deploy_agent == true
 
 - include: setup-monolith-service.yml
-  when: monolith_core_enable_feature_setup_monolith_feature == true
+  when: monolith_core_enable_feature_setup_monolith_service == true
 
 - include: setup-menagerie-shim.yml
   when: monolith_core_enable_feature_menagerie_shim == true
