@@ -1,0 +1,33 @@
+# {{ ansible_managed }}
+
+# Server Block (Virtual Host) server definition file for reverse proxying a Monolith service
+#
+# This file was based on a template for non-secure (HTTP) server blocks.
+#
+# This file is included within the 'http' directive of the main Nginx configuration file '/etc/nginx/nginx.conf'.
+
+server {
+    listen {{ nginx_server_blocks_listening_port_https }} ssl default_server deferred;
+    listen [::]:{{ nginx_server_blocks_listening_port_https }} ssl default_server deferred;
+
+    server_name {{ monolith_service_host_name }};
+
+    ssl_certificate      {{ nginx_server_blocks_tls_certificate_path }}/{{ nginx_server_blocks_tls_certificate_file }};
+    ssl_certificate_key  {{ nginx_server_blocks_tls_key_path }}/{{ nginx_server_blocks_tls_key_file }};
+
+    # Additional TLS/SSL options are set in /etc/nginx/conf.d/tls.conf
+
+    # Gzip is disabled by default for secure traffic due to a vulnerability in Nginx
+    # Source: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=773332
+    gzip {{ nginx_server_blocks_tls_enable_gzip }};
+
+    location / {
+        # Reverse proxy requests to Monolith service
+        proxy_pass http://localhost:{{ monolith_core_monolith_service_port }};
+
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}

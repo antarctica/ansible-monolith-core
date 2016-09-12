@@ -1,0 +1,69 @@
+---
+# Install and configure AWS Code Deploy Agent
+# Source: https://github.com/aws/aws-codedeploy-agent
+# Based on: https://gist.github.com/artburkart/8b8894ef8973fab34773a1a311f9f19a
+
+- name: install ruby 2 dependency
+  apt:
+    pkg=ruby2.0
+    state=present
+    update_cache=yes
+
+- name: ensure deployment directory exists
+  file:
+    path="/srv/apps"
+    owner="{{ monolith_core_monolith_aws_code_deploy_agent_user }}"
+    group="{{ monolith_core_monolith_aws_code_deploy_agent_user }}"
+    mode=0775
+    state=directory
+  when: "'manager--vagrant' not in group_names"
+
+- name: install code deploy agent package
+  apt: deb="{{ monolith_core_app_aws_codedeploy_agent_package_url }}"
+
+- name: modify code deploy init script to allow non-root user
+  lineinfile:
+    dest=/etc/init.d/codedeploy-agent
+    regexp='^CODEDEPLOY_USER=""'
+    line='# CODEDEPLOY_USER=""'
+  notify: Restart CodeDeployAgent
+
+- name: set ownership for code deploy agent directory
+  file:
+    path="/opt/codedeploy-agent"
+    owner="{{ monolith_core_monolith_aws_code_deploy_agent_user }}"
+    group="{{ monolith_core_monolith_aws_code_deploy_agent_user }}"
+    recurse=yes
+
+- name: set ownership and permissions for code deploy agent log files
+  file:
+    path="{{ item.path }}"
+    owner="{{ monolith_core_monolith_aws_code_deploy_agent_user }}"
+    mode="{{ item.mode }}"
+  with_items:
+    -
+      path: "/var/log/aws"
+      mode: "0775"
+    -
+      path: "/var/log/aws/codedeploy-agent"
+      mode: "0775"
+    -
+      path: "/var/log/aws/codedeploy-agent/codedeploy-agent.log"
+      mode: "0664"
+    -
+      path: "/var/log/aws/codedeploy-agent/codedeploy-agent.log.age"
+      mode: "0664"
+
+- name: configure user used by code deploy agent
+  lineinfile:
+    dest=/etc/profile
+    line="export {{ item.key | upper }}='{{ item.value }}'"
+  with_dict:
+    CODEDEPLOY_USER: "{{ monolith_core_monolith_aws_code_deploy_agent_user }}"
+  notify: Restart CodeDeployAgent
+
+- name: generate code deploy agent configuration file
+  template:
+    src: templates/etc/codedeploy-agent/conf/codedeployagent.yml.j2
+    dest: /etc/codedeploy-agent/conf/codedeployagent.yml.j2
+  notify: Restart CodeDeployAgent

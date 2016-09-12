@@ -1,0 +1,39 @@
+---
+# Create a Nginx reverse proxy to map conventional ports (80/433) to a Monolith service port
+
+- name: generate http to https redirect server block
+  template:
+    src="roles/bas-ansible-roles-collection.nginx/templates/etc/nginx/sites-available/server-block-http-to-https.j2"
+    dest="/etc/nginx/sites-available/http-https-redirect"
+  notify: Restart Nginx
+- name: enable http to https redirect server block
+  file:
+      src="/etc/nginx/sites-available/http-https-redirect"
+     dest="/etc/nginx/sites-enabled/http-https-redirect"
+    state=link
+  notify: Restart Nginx
+
+- name: copy and secure certificate and private key for https
+  copy:
+    src="{{ item.source }}"
+    dest="{{ item.dest }}"
+    mode=0600
+  with_items:
+    -
+      source: "{{ tls_certificate_path }}"
+      dest: "{{ webserver_virtual_hosts_tls_certificate_path }}/{{ webserver_virtual_hosts_tls_certificate_file }}"
+    -
+      source: "{{ tls_private_key_path }}"
+      dest: "{{ webserver_virtual_hosts_tls_key_path }}/{{ webserver_virtual_hosts_tls_key_file }}"
+
+- name: generate reverse proxy for monolith services server block
+  template:
+    src="etc/nginx/sites-available/monolith-menagerie-shim.j2"
+    dest="/etc/nginx/sites-available/monolith-services-reverse-proxy"
+  notify: Restart Nginx
+- name: enable reverse proxy for monolith services server block
+  file:
+      src="/etc/nginx/sites-available/monolith-services-reverse-proxy"
+     dest="/etc/nginx/sites-enabled/monolith-services-reverse-proxy"
+    state=link
+  notify: Restart Nginx

@@ -1,0 +1,4 @@
+---
+# handlers file for monolith-core
+
+- include: aws-code-deploy.yml

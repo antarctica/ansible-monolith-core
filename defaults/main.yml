@@ -1,0 +1,22 @@
+---
+
+# Role features
+
+monolith_core_enable_feature_menagerie_shim: false
+monolith_core_enable_feature_aws_code_deploy_agent: false
+monolith_core_enable_feature_setup_monolith_service: false
+
+# Monolith operating system user variables
+
+monolith_core_monolith_aws_code_deploy_agent_user: app
+monolith_core_monolith_service_non_privileged_user: app
+
+# Service server block template variables
+
+monolith_core_monolith_service_host_name: "{{ monolith_core_monolith_service_name }}.web.bas.ac.uk"
+monolith_core_monolith_service_root: "/srv/apps/{{ monolith_core_monolith_service_name }}/public"
+
+# AWS Code Deploy agent specific variables
+
+monolith_core_app_aws_codedeploy_agent_desired_version: 1.0-1.1011
+monolith_core_app_aws_codedeploy_agent_package_url: "https://aws-codedeploy-eu-west-1.s3.amazonaws.com/releases/codedeploy-agent_{{ monolith_core_app_aws_codedeploy_agent_desired_version }}_all.deb"

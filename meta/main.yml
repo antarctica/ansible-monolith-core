@@ -1,0 +1,19 @@
+---
+galaxy_info:
+  author: Felix Fennell
+  description: Core components for provisioning a Monolith instance or service
+  company: British Antarctic Survey
+
+  license: MIT
+  min_ansible_version: 1.8
+
+  platforms:
+  - name: Ubuntu
+    versions:
+      - trusty
+
+  galaxy_tags:
+  - system
+
+dependencies:
+  - { role: 'bas-ansible-roles-collection.php7-nginx',  tags: BARC_ROLE_DEPENDENCY }

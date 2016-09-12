@@ -1,0 +1,29 @@
+# {{ ansible_managed }}
+
+# Server Block (Virtual Host) server definition file for a Monolith service
+#
+# This file was based on a template for non-secure (HTTP) server blocks.
+#
+# This file is included within the 'http' directive of the main Nginx configuration file '/etc/nginx/nginx.conf'.
+
+server {
+    listen {{ monolith_core_monolith_service_port }} deferred;
+    listen [::]:{{ monolith_core_monolith_service_port }} deferred;
+
+    server_name {{ monolith_core_monolith_service_host_name }};
+
+    root  {{ monolith_core_monolith_service_root }};
+    index {{ nginx_server_blocks_indexes | join(" ") }};
+
+    location / {
+        # First attempt to serve request as a file, then a directory, then fall back to application
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    # Additional configuration files included by this role
+    # Meta-files     - options are set in /etc/nginx/conf.d/server-blocks/meta-files.conf
+    # Static caching - options are set in /etc/nginx/conf.d/server-blocks/static-caching.conf
+
+    # Load additional configuration files blocks
+    include /etc/nginx/conf.d/server-blocks/*.conf;
+}
