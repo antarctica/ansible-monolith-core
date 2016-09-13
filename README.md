@@ -8,22 +8,34 @@ Services.
 ## Overview
 
 This role is used as the core of a [Monolith](https://bitbucket.org/antarctica/monolith) instance, that is 
-an Instance which will host Monolith Services. It is also used by these services to assist in configuring Monolith 
-instances, to host such services.
-
-This role supports all Monolith environments, however the features used for each environment vary based on use-case:
-
-1. for Monolith instances - installing and configuring the 
-[AWS Code Deploy agent](http://docs.aws.amazon.com/codedeploy/latest/userguide/host-cleanup.html) 
-
-2. for Monolith instances - configuring a *shim* for the BAS Service Layer (Menagerie)
-
-3. for Monolith services - configuring a Monolith instance to include a new service
-
-These features are disabled by default, and are controlled using variables within this role. See the *Variables* 
-section for more information.
+an instance which will host Monolith services. It is also used by these services, to configure Monolith instances, to 
+host such services.
 
 **Note:** This is not a general purpose role, and may not be, and is not designed to be, useful to others. 
+
+This role supports a range of features, some of which are only recommended for specific Monolith environments:
+
+2. setting up [AWS Code Deploy agent](http://docs.aws.amazon.com/codedeploy/latest/userguide/host-cleanup.html) 
+  * for Monolith instances
+  * installs the AWS Code Deploy agent for managing the deployment of Monolith services
+  * see the *AWS Code Deploy agent* sub-section for more information
+  * disabled by default
+  * **MUST** be used in *production* or *staging* Monolith environment, **MAY** be used in any other environment
+
+3. setting up BAS Service Layer shim
+  * for Monolith instances
+  * configures a Monolith instance to emulate the minimal viable features of the BAS Service Layer for testing services
+  * see the *BAS Service Layer shim* sub-section for more information
+  * disabled by default
+  * **MUST NOT** be used in *production* or *staging* Monolith environment, **MAY** be used in any other environment
+
+4. configuring a Monolith instance to host a Monolith service
+  * for Monolith services
+  * configures a Monolith instance to host a Monolith service by generating the relevant configuration files
+  * see the *Monolith service Monolith instance configuration* sub-section for more information
+  * disabled by default
+  * **MAY** be used in any Monolith environment
+
 
 ## Ansible compatibility
 
@@ -84,7 +96,7 @@ There are numerous limitations with this *shim*:
 1. The *shim* provides for a single Monolith service only, i.e. all requests are routed to the same service 
 2. The *shim* will not provide any of the other features provided by the BAS Service Layer, such as rate limiting
 
-### Monolith service web-server configuration
+### Monolith service Monolith instance configuration
 
 Before a Monolith service can be deployed to a Monolith instance (of any environment), the instance must be configured.
 
@@ -147,7 +159,7 @@ To setup a Monolith instance to host a Monolith service (local development or de
 * **MAY** be specified
 * this variable is used as a 'feature flag' for whether tasks to include a Monolith service in a Monolith instance are 
 applied
-* see the *Monolith service web-server configuration* section for more information
+* see the *Monolith service Monolith instance configuration* section for more information
 * values **MUST** use one of these options, as determined by Ansible:
     * `true`
     * `false`

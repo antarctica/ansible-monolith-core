@@ -5,6 +5,10 @@ This role adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased][unreleased]
 
+### Changed
+
+* General README refactoring
+
 ## 0.1.1 - 12/09/2016
 
 ### Fixed
