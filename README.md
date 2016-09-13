@@ -15,6 +15,13 @@ host such services.
 
 This role supports a range of features, some of which are only recommended for specific Monolith environments:
 
+1. setting up Monolith utilities
+  * for Monolith instances
+  * installs a number of small utilities useful for debugging problems or validating deployments can be installed
+  * see the *Monolith utilities* sub-section for more information
+  * enabled by default
+  * **MAY** be used in any Monolith environment
+
 2. setting up [AWS Code Deploy agent](http://docs.aws.amazon.com/codedeploy/latest/userguide/host-cleanup.html) 
   * for Monolith instances
   * installs the AWS Code Deploy agent for managing the deployment of Monolith services
@@ -106,6 +113,18 @@ the Monolith service.
 This role provides the tasks and template necessary to do this, and will be executed where the relevant feature is 
 enabled and the relevant role variables are set for the service name, port and document root.
 
+### Monolith utilities
+
+For convenience a number of small utilities useful for debugging problems or validating deployments can be installed.
+
+For example the `curl` utility can be used as part of validating a Monolith Service deployment, by checking an endpoint 
+responds as expected. 
+
+These utilities will be installed where *monolith_core_enable_feature_setup_monolith_utilities* is `true`:
+
+* `curl` - command line HTTP client
+* `htop` - interactive process monitor
+
 ### Typical usage example
 
 To setup a Monolith instance to host a Monolith service (local development or development environments):
@@ -165,6 +184,18 @@ applied
     * `false`
 * values **SHOULD NOT** be quoted to prevent Ansible coercing values to a string
 * default: `false`
+
+#### monolith_core_enable_feature_setup_monolith_utilities
+
+* **MAY** be specified
+* this variable is used as a 'feature flag' for whether tasks to include utilities useful for managing a Monolith 
+instance or Monolith service are applied
+* see the *Monolith utilities* section for more information
+* values **MUST** use one of these options, as determined by Ansible:
+    * `true`
+    * `false`
+* values **SHOULD NOT** be quoted to prevent Ansible coercing values to a string
+* default: `true`
 
 #### *monolith_core_monolith_aws_code_deploy_agent_user*
 

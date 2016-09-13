@@ -5,6 +5,12 @@ This role adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased][unreleased]
 
+## 0.2.0 - 13/09/2016
+
+### Added
+
+* Monolith utility tasks to install cURL and htop, useful for validating and debugging services
+
 ### Changed
 
 * General README refactoring

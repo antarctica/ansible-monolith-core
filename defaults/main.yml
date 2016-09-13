@@ -5,6 +5,7 @@
 monolith_core_enable_feature_menagerie_shim: false
 monolith_core_enable_feature_aws_code_deploy_agent: false
 monolith_core_enable_feature_setup_monolith_service: false
+monolith_core_enable_feature_setup_monolith_utilities: true
 
 # Monolith operating system user variables
 
