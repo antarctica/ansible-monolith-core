@@ -1,5 +1,0 @@
----
-# Handlers for AWS Code Deploy agent
-
-- name: Restart CodeDeployAgent
-  service: name=codedeploy-agent state=restarted

@@ -5,6 +5,10 @@ This role adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased][unreleased]
 
+### Changed
+
+* Refactoring handlers to a single file
+
 ## 0.2.0 - 13/09/2016
 
 ### Added
