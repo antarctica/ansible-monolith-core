@@ -5,6 +5,8 @@ This role adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased][unreleased]
 
+## 0.3.0 - 14/09/2016 - BREAKING!
+
 ### Removed [Breaking!]
 
 * Removing `php7-nginx` role dependency in favour of a role requirement in specific circumstances (Monolith instances 
