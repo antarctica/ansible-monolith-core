@@ -5,6 +5,21 @@ This role adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased][unreleased]
 
+### Removed [Breaking!]
+
+* Removing `php7-nginx` role dependency in favour of a role requirement in specific circumstances (Monolith instances 
+and local development environments for Monolith services)
+
+### Changed [Breaking!]
+
+* Refactoring variables referring to which TLS certificate and private key to upload when generating the Menagerie shim 
+* Refactoring variables used in Nginx templates to work around removal of Nginx role dependency
+
+### Added
+
+* Duplicate Nginx handler to work around removal of Nginx role dependency
+* Duplicate HTTP to HTTPS redirect generic server block for Menagerie shim to work around removal of Nginx role dependency
+
 ### Changed
 
 * Refactoring handlers to a single file

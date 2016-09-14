@@ -1,25 +1,26 @@
 # {{ ansible_managed }}
 
-# Server Block (Virtual Host) server definition file for reverse proxying a Monolith service
+# Server Block (Virtual Host) server definition file to reverse proxy to a single Monolith service
 #
 # This file was based on a template for non-secure (HTTP) server blocks.
 #
 # This file is included within the 'http' directive of the main Nginx configuration file '/etc/nginx/nginx.conf'.
 
 server {
-    listen {{ nginx_server_blocks_listening_port_https }} ssl default_server deferred;
-    listen [::]:{{ nginx_server_blocks_listening_port_https }} ssl default_server deferred;
+    listen {{ nginx_server_blocks_listening_port_https | default('443') }} ssl default_server deferred;
+    listen [::]:{{ nginx_server_blocks_listening_port_https | default('443') }} ssl default_server deferred;
 
+    # The shim is limited to a single Monolith service so we can its hostname/endpoint directly
     server_name {{ monolith_service_host_name }};
 
-    ssl_certificate      {{ nginx_server_blocks_tls_certificate_path }}/{{ nginx_server_blocks_tls_certificate_file }};
-    ssl_certificate_key  {{ nginx_server_blocks_tls_key_path }}/{{ nginx_server_blocks_tls_key_file }};
+    ssl_certificate      {{ monolith_core_menagerie_shim_tls_certificate_destination_path }};
+    ssl_certificate_key  {{ monolith_core_menagerie_shim_tls_private_key_destination_path }};
 
     # Additional TLS/SSL options are set in /etc/nginx/conf.d/tls.conf
 
     # Gzip is disabled by default for secure traffic due to a vulnerability in Nginx
     # Source: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=773332
-    gzip {{ nginx_server_blocks_tls_enable_gzip }};
+    gzip off;
 
     location / {
         # Reverse proxy requests to Monolith service

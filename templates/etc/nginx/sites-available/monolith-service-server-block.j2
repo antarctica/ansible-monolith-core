@@ -13,7 +13,7 @@ server {
     server_name {{ monolith_core_monolith_service_host_name }};
 
     root  {{ monolith_core_monolith_service_root }};
-    index {{ nginx_server_blocks_indexes | join(" ") }};
+    index index.html index.php;
 
     location / {
         # First attempt to serve request as a file, then a directory, then fall back to application

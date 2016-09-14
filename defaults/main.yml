@@ -12,6 +12,14 @@ monolith_core_enable_feature_setup_monolith_utilities: true
 monolith_core_monolith_aws_code_deploy_agent_user: app
 monolith_core_monolith_service_non_privileged_user: app
 
+# Monolith menagerie shim variables
+
+monolith_core_menagerie_shim_tls_certificate_source_path: ~/.tls/certs/v.m.tls.crt
+monolith_core_menagerie_shim_tls_private_key_source_path: ~/.tls/private/v.m.tls.key
+
+monolith_core_menagerie_shim_tls_certificate_destination_path: /etc/ssl/certs/v.m.tls.crt
+monolith_core_menagerie_shim_tls_private_key_destination_path: /etc/ssl/private/v.m.tls.key
+
 # Service server block template variables
 
 monolith_core_monolith_service_host_name: "{{ monolith_core_monolith_service_name }}.web.bas.ac.uk"

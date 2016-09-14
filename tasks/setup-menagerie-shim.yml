@@ -3,7 +3,7 @@
 
 - name: generate http to https redirect server block
   template:
-    src="roles/bas-ansible-roles-collection.nginx/templates/etc/nginx/sites-available/server-block-http-to-https.j2"
+    src="etc/nginx/sites-available/server-block-http-to-https.j2"
     dest="/etc/nginx/sites-available/http-https-redirect"
   notify: Restart Nginx
 - name: enable http to https redirect server block
@@ -20,11 +20,11 @@
     mode=0600
   with_items:
     -
-      source: "{{ tls_certificate_path }}"
-      dest: "{{ webserver_virtual_hosts_tls_certificate_path }}/{{ webserver_virtual_hosts_tls_certificate_file }}"
+      source: "{{ monolith_core_menagerie_shim_tls_certificate_source_path }}"
+      dest: "{{ monolith_core_menagerie_shim_tls_certificate_destination_path }}"
     -
-      source: "{{ tls_private_key_path }}"
-      dest: "{{ webserver_virtual_hosts_tls_key_path }}/{{ webserver_virtual_hosts_tls_key_file }}"
+      source: "{{ monolith_core_menagerie_shim_tls_private_key_source_path }}"
+      dest: "{{ monolith_core_menagerie_shim_tls_private_key_destination_path }}"
 
 - name: generate reverse proxy for monolith services server block
   template:

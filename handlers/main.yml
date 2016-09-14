@@ -3,3 +3,6 @@
 
 - name: Restart CodeDeployAgent
   service: name=codedeploy-agent state=restarted
+
+- name: Restart Nginx
+  service: name=nginx state=restarted

@@ -43,19 +43,19 @@ This role supports a range of features, some of which are only recommended for s
   * disabled by default
   * **MAY** be used in any Monolith environment
 
-
 ## Ansible compatibility
 
 * this role supports Ansible 2.x only
 
 ## Dependencies
 
-* [**bas-ansible-roles-collection.php7-nginx**](https://galaxy.ansible.com/bas-ansible-roles-collection/php7-nginx/)
-  * Minimum version: *0.1.0*
+* none
 
 ## Requirements
 
-* none
+* [**bas-ansible-roles-collection.php7-nginx**](https://galaxy.ansible.com/bas-ansible-roles-collection/php7-nginx/)
+  * Minimum version: *0.1.0*
+  * required for monolith instances and local development environments for Monolith services
 
 ## Usage
 
@@ -82,25 +82,22 @@ See the main Monolith project documentation for more information on how AWS Code
 Monolith is designed to operate behind a load balancing layer, specifically the 
 [BAS Service Layer](https://bitbucket.org/antarctica/menagerie) (Menagerie).
 
-For development Monolith environments this service layer is not used, and means two specific features need to be 
-provided by such Monolith environments, specifically:
+For development Monolith environments, this service layer is not used, however two specific features are needed to
+support Monolith services, specifically:
 
-1. listening to requests on well-known ports (80/443) and passing these to Monolith service ports
-2. terminating TLS/SSL requests and passing these with appropriate `forwarded-for` headers, such that Monolith services 
-don't need to handle TLS/SSL functions
+1. listening to requests on well-known ports (80/443) and passing these to a Monolith service port
+2. terminating TLS/SSL requests and passing these with appropriate `forwarded-for` headers, such that a Monolith 
+service doesn't need to handle TLS/SSL functions
 
-This role includes a *shim* for the BAS Service Layer which provides these functions:
+A *shim* using a Nginx reverse proxy is used to provide these required features in development environments.
 
-1. using the Nginx web-server available in the Monolith environment, a reverse proxy is used to forward requests from
-well-known ports (80/443) to a single Monolith service port
-2. using the Nginx web-server available in the Monolith environment, insecure requests are redirected to a secure 
-equivalent, i.e. 'http://' to 'https://'
-3. using the Nginx web-server available in the Monolith environment, secure requests are terminated, with the 
-appropriate `forwarded-for` headers set
+**Note:** The tasks to configure this shim include uploading a TLS/SSL certificate from your local machine. 
+This certificate is assumed to be a ['make believe' certificate](https://gist.github.com/felnne/25c220a03f8f39663a5d),
+however any certificate can be used by changing the relevant variables.
 
-There are numerous limitations with this *shim*:
+This shim has numerous limitations:
 
-1. The *shim* provides for a single Monolith service only, i.e. all requests are routed to the same service 
+1. The *shim* only supports a single Monolith service, i.e. all requests are routed to the same service 
 2. The *shim* will not provide any of the other features provided by the BAS Service Layer, such as rate limiting
 
 ### Monolith service Monolith instance configuration
@@ -212,6 +209,42 @@ instance or Monolith service are applied
 * values **MUST** be a valid system user, as determined by the operating system
 * note: the default value for this variable uses a conventional user used across the Monolith project 
 * default: `app`
+
+#### *monolith_core_menagerie_shim_tls_certificate_source_path*
+
+* **MAY** be specified
+* specifies the local path to the certificate file for the Menagerie shim
+* Values **MUST** be a valid system path and file, including any file extension, as determined by Ansible
+* this variable is intended for use in (local) development, Monolith instance environments, or local development 
+environments of Monolith services only
+* default: `~/.tls/certs/v.m.tls.crt`
+
+#### *monolith_core_menagerie_shim_tls_private_key_source_path*
+
+* **MAY** be specified
+* specifies the local path to the certificate private key for the Menagerie shim
+* Values **MUST** be a valid system path and file, including any file extension, as determined by Ansible
+* this variable is intended for use in (local) development, Monolith instance environments, or local development 
+environments of Monolith services only
+* default: `~/.tls/private/v.m.tls.key`
+
+#### *monolith_core_menagerie_shim_tls_certificate_destination_path*
+
+* **MAY** be specified
+* specifies the path the certificate file used for the Menagerie shim will be stored as
+* Values **MUST** be a valid system path and file, including any file extension, as determined by Nginx
+* this variable is intended for use in (local) development, Monolith instance environments, or local development 
+environments of Monolith services only
+* default: `/etc/ssl/certs/v.m.tls.crt`
+
+#### *monolith_core_menagerie_shim_tls_private_key_destination_path*
+
+* **MAY** be specified
+* specifies the path the certificate private key used for the Menagerie shim will be stored as
+* Values **MUST** be a valid system path and file, including any file extension, as determined by Nginx
+* this variable is intended for use in (local) development, Monolith instance environments, or local development 
+environments of Monolith services only
+* default: `/etc/ssl/private/v.m.tls.key`
 
 #### *monolith_core_monolith_service_name*
 

@@ -1,0 +1,19 @@
+# {{ ansible_managed }}
+
+# Server Block (Virtual Host) server definition file
+#
+# This file was generated from a template for non-secure (HTTP) server block which redirects to a secure (HTTPS) server
+# block.
+#
+# This file is included within the 'http' directive of the main Nginx configuration file '/etc/nginx/nginx.conf'.
+
+server {
+    listen {{ nginx_server_blocks_listening_port_http | default('80') }} default_server deferred;
+    listen [::]:{{ nginx_server_blocks_listening_port_http | default('80') }} default_server deferred;
+
+    server_name {{ nginx_server_blocks_server_name | default('_') }};
+
+    # Redirect all HTTP requests to their HTTPS equivalent
+    # Note: A 301 redirect is 'permanent' and so this action will be cached by any server-side or client browser caches.
+    return 301 https://$host$request_uri;
+}
