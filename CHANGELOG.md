@@ -5,6 +5,12 @@ This role adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased][unreleased]
 
+## 0.3.2 - 14/09/2016
+
+### Fixed
+
+* YAML formatting of dependencies array for compatibility with Ansible Galaxy
+
 ## 0.3.1 - 14/09/2016
 
 ### Fixed
