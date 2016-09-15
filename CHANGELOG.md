@@ -5,6 +5,8 @@ This role adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased][unreleased]
 
+## 0.3.3 - 15/09/2016
+
 ### Fixed
 
 * Using correct name for Monolith service endpoint in BAS Service Layer shim
