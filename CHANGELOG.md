@@ -5,6 +5,14 @@ This role adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased][unreleased]
 
+### Fixed
+
+* Using correct name for Monolith service endpoint in BAS Service Layer shim
+
+### Changed
+
+* Using consistent name for BAS Service Layer shim when naming generated configuration files
+
 ## 0.3.2 - 14/09/2016
 
 ### Fixed
