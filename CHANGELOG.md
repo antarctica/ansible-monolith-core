@@ -5,6 +5,10 @@ This role adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased][unreleased]
 
+### Changed [Breaking!]
+
+* Refactoring `utilities` tasks and variables to more generalised Monolith instance setup tasks, changing variables
+
 ## 0.3.3 - 15/09/2016
 
 ### Fixed

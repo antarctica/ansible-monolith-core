@@ -1,0 +1,29 @@
+---
+# Installs useful utilities and configures relevant services to setup an empty Monolith instance
+
+- name: install utilities
+  apt:
+                 pkg={{ item }}
+        update_cache=yes
+    cache_valid_time=3600
+               state=present
+  with_items:
+    - curl
+    - htop
+
+- name: ensure services document root directory exists
+  file:
+    path="/srv/apps"
+    owner="{{ monolith_core_monolith_service_non_privileged_user }}"
+    group="{{ monolith_core_monolith_service_non_privileged_user }}"
+    state=directory
+  when: "'manager--vagrant' not in group_names"
+
+- name: ensure services log directory exists
+  file:
+    path="/var/log/apps"
+    owner="{{ monolith_core_monolith_service_non_privileged_user }}"
+    group="{{ monolith_core_monolith_service_non_privileged_user }}"
+    mode=0777
+    state=directory
+  when: "'manager--vagrant' not in group_names"

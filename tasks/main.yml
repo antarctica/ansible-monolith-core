@@ -1,7 +1,7 @@
 ---
 
-- include: setup-monolith-utilities.yml
-  when: monolith_core_enable_feature_setup_monolith_utilities == true
+- include: setup-monolith-instance.yml
+  when: monolith_core_enable_feature_setup_monolith_instance == true
 
 - include: setup-aws-code-deploy-agent.yml
   when: monolith_core_enable_feature_aws_code_deploy_agent == true

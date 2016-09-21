@@ -7,7 +7,7 @@ Services.
 
 ## Overview
 
-This role is used as the core of a [Monolith](https://bitbucket.org/antarctica/monolith) instance, that is 
+This role is used as the core of a [Monolith](https://bitbucket.org/antarctica/monolith) Instance, that is 
 an instance which will host Monolith services. It is also used by these services, to configure Monolith instances, to 
 host such services.
 
@@ -15,10 +15,11 @@ host such services.
 
 This role supports a range of features, some of which are only recommended for specific Monolith environments:
 
-1. setting up Monolith utilities
+1. setting up a Monolith Instance
   * for Monolith instances
-  * installs a number of small utilities useful for debugging problems or validating deployments can be installed
-  * see the *Monolith utilities* sub-section for more information
+  * installs a number of small utilities useful for debugging problems or validating deployments
+  * configures common directories for hosting Monolith services and their log files
+  * see the *Monolith instances* sub-section for more information
   * enabled by default
   * **MAY** be used in any Monolith environment
 
@@ -100,6 +101,30 @@ This shim has numerous limitations:
 1. The *shim* only supports a single Monolith service, i.e. all requests are routed to the same service 
 2. The *shim* will not provide any of the other features provided by the BAS Service Layer, such as rate limiting
 
+### Monolith instances
+
+Before services can be deployed into a Monolith instance it needs to configured. This consists of:
+
+* creating common directories
+* installing common utilities
+
+These common directories will be created:
+
+* `/srv/apps/`
+  * where individual services are stored/deployed, e.g. `/srv/apps/foo` will contain the `foo` service
+* `/var/log/apps/`
+  * where log files for services are stored, e.g. `/var/log/apps/foo` will contain logs for the `foo` service
+
+In addition, these utilities will be installed:
+
+* `curl` - command line HTTP client
+* `htop` - interactive process monitor
+
+These are useful for debugging problems or validating deployments.
+
+For example the `curl` utility can be used as part of validating a Monolith Service deployment, by checking an endpoint 
+responds as expected.
+
 ### Monolith service Monolith instance configuration
 
 Before a Monolith service can be deployed to a Monolith instance (of any environment), the instance must be configured.
@@ -109,18 +134,6 @@ the Monolith service.
 
 This role provides the tasks and template necessary to do this, and will be executed where the relevant feature is 
 enabled and the relevant role variables are set for the service name, port and document root.
-
-### Monolith utilities
-
-For convenience a number of small utilities useful for debugging problems or validating deployments can be installed.
-
-For example the `curl` utility can be used as part of validating a Monolith Service deployment, by checking an endpoint 
-responds as expected. 
-
-These utilities will be installed where *monolith_core_enable_feature_setup_monolith_utilities* is `true`:
-
-* `curl` - command line HTTP client
-* `htop` - interactive process monitor
 
 ### Typical usage example
 
@@ -170,6 +183,17 @@ To setup a Monolith instance to host a Monolith service (local development or de
 * values **SHOULD NOT** be quoted to prevent Ansible coercing values to a string
 * default: `false`
 
+#### *monolith_core_enable_feature_setup_monolith_instances*
+
+* **MAY** be specified
+* this variable is used as a 'feature flag' for whether tasks to configure a Monolith instance are applied
+* see the *Monolith instances* section for more information
+* values **MUST** use one of these options, as determined by Ansible:
+    * `true`
+    * `false`
+* values **SHOULD NOT** be quoted to prevent Ansible coercing values to a string
+* default: `false`
+
 #### *monolith_core_enable_feature_setup_monolith_service*
 
 * **MAY** be specified
@@ -181,18 +205,6 @@ applied
     * `false`
 * values **SHOULD NOT** be quoted to prevent Ansible coercing values to a string
 * default: `false`
-
-#### monolith_core_enable_feature_setup_monolith_utilities
-
-* **MAY** be specified
-* this variable is used as a 'feature flag' for whether tasks to include utilities useful for managing a Monolith 
-instance or Monolith service are applied
-* see the *Monolith utilities* section for more information
-* values **MUST** use one of these options, as determined by Ansible:
-    * `true`
-    * `false`
-* values **SHOULD NOT** be quoted to prevent Ansible coercing values to a string
-* default: `true`
 
 #### *monolith_core_monolith_aws_code_deploy_agent_user*
 
@@ -276,6 +288,14 @@ of a conventional path to deployed applications
 * values **MUST** be a valid system path, as determined by the operating system, with suitable permissions
 * note the default value for this variable includes setting a prefix of `/public`, this prefix **MUST NOT** be changed
 * default: `/srv/apps/{{ monolith_core_monolith_service_name }}/public`
+
+#### *monolith_core_monolith_service_log*
+
+* **MAY** be specified
+* by default, the value of this variable uses the value of the *monolith_core_monolith_service_name* variable as part 
+of a conventional path to application log files
+* values **MUST** be a valid system path, as determined by the operating system, with suitable permissions
+* default: `/var/logs/apps/{{ monolith_core_monolith_service_name }}`
 
 #### *monolith_core_app_aws_codedeploy_agent_desired_version*
 

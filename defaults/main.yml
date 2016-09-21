@@ -5,7 +5,7 @@
 monolith_core_enable_feature_menagerie_shim: false
 monolith_core_enable_feature_aws_code_deploy_agent: false
 monolith_core_enable_feature_setup_monolith_service: false
-monolith_core_enable_feature_setup_monolith_utilities: true
+monolith_core_enable_feature_setup_monolith_instance: false
 
 # Monolith operating system user variables
 
@@ -24,6 +24,7 @@ monolith_core_menagerie_shim_tls_private_key_destination_path: /etc/ssl/private/
 
 monolith_core_monolith_service_host_name: "{{ monolith_core_monolith_service_name }}.web.bas.ac.uk"
 monolith_core_monolith_service_root: "/srv/apps/{{ monolith_core_monolith_service_name }}/public"
+monolith_core_monolith_service_log: "/var/log/{{ monolith_core_monolith_service_name }}"
 
 # AWS Code Deploy agent specific variables
 
