@@ -5,6 +5,10 @@ This role adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased][unreleased]
 
+### Added
+
+* Tasks for setting up application log files for both Monolith Services and Monolith Instances
+
 ### Changed [Breaking!]
 
 * Refactoring `utilities` tasks and variables to more generalised Monolith instance setup tasks, changing variables

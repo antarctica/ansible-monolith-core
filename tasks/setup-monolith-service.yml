@@ -9,6 +9,15 @@
     state=directory
   when: "'manager--vagrant' not in group_names"
 
+- name: ensure service log directory exists
+  file:
+    path="{{ monolith_core_monolith_service_log }}"
+    owner="{{ monolith_core_monolith_service_non_privileged_user }}"
+    group="{{ monolith_core_monolith_service_non_privileged_user }}"
+    mode=0777
+    state=directory
+  when: "'manager--vagrant' not in group_names"
+
 - name: generate server block for service
   template:
     src="templates/etc/nginx/sites-available/monolith-service-server-block.j2"
