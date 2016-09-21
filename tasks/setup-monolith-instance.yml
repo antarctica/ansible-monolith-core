@@ -26,4 +26,3 @@
     group="{{ monolith_core_monolith_service_non_privileged_user }}"
     mode=0777
     state=directory
-  when: "'manager--vagrant' not in group_names"

@@ -183,7 +183,7 @@ To setup a Monolith instance to host a Monolith service (local development or de
 * values **SHOULD NOT** be quoted to prevent Ansible coercing values to a string
 * default: `false`
 
-#### *monolith_core_enable_feature_setup_monolith_instances*
+#### *monolith_core_enable_feature_setup_monolith_instance*
 
 * **MAY** be specified
 * this variable is used as a 'feature flag' for whether tasks to configure a Monolith instance are applied
