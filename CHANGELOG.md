@@ -5,6 +5,8 @@ This role adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased][unreleased]
 
+## 0.5.0 - 04/10/2016
+
 ### Added
 
 * UFW profile for the Monolith Services Port Range
