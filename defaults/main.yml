@@ -20,7 +20,12 @@ monolith_core_menagerie_shim_tls_private_key_source_path: ~/.tls/private/v.m.tls
 monolith_core_menagerie_shim_tls_certificate_destination_path: /etc/ssl/certs/v.m.tls.crt
 monolith_core_menagerie_shim_tls_private_key_destination_path: /etc/ssl/private/v.m.tls.key
 
-# Service server block template variables
+# Monolith Nginx variables
+
+monolith_core_monolith_services_port_range_from: 4000
+monolith_core_monolith_services_port_range_to: 4499
+
+# Monolith Service Nginx server block template variables
 
 monolith_core_monolith_service_host_name: "{{ monolith_core_monolith_service_name }}.web.bas.ac.uk"
 monolith_core_monolith_service_root: "/srv/apps/{{ monolith_core_monolith_service_name }}/public"

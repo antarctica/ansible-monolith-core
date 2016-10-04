@@ -26,3 +26,17 @@
     group="{{ monolith_core_monolith_service_non_privileged_user }}"
     mode=0777
     state=directory
+
+- name: generate firewall service for nginx using monolith service port range - Ubuntu/UFW
+  template:
+     src=etc/ufw/applications.d/nginx-menagerie.j2
+    dest=/etc/ufw/applications.d/nginx-menagerie
+  when: ansible_distribution == "Ubuntu"
+
+- name: configure firewall rules for nginx service - Ubuntu/UFW
+  ufw:
+         name="nginx-menagerie"
+         rule=allow
+    direction=in
+  when: ansible_distribution == "Ubuntu"
+  notify: Restart Firewall - Ubuntu

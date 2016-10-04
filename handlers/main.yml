@@ -6,3 +6,6 @@
 
 - name: Restart Nginx
   service: name=nginx state=restarted
+
+- name: Restart Firewall - Ubuntu
+  ufw: state=reloaded

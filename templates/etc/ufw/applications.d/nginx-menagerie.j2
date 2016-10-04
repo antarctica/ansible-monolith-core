@@ -1,0 +1,6 @@
+; {{ ansible_managed }}
+
+[nginx-menagerie]
+title=Web Server (Nginx, HTTP)
+description=Small, but very powerful and efficient web server
+ports={{ monolith_core_monolith_services_port_range_from }}:{{ monolith_core_monolith_services_port_range_to }}/tcp
